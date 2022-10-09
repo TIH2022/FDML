@@ -24,11 +24,9 @@ def generate_metadata():
 
     return result
 
-
 def get_data_payload(test_array):
     return {'data':','.join(map(str, test_array)),
             'metadata': generate_metadata()}
-
 
 def generate_traffic(X_test):
     """
@@ -45,7 +43,6 @@ def generate_traffic(X_test):
             # We invoke the function according to a shifted Poisson distribution
             # to simulate data arriving at random intervals
             time.sleep(poisson.rvs(1, size=1)[0] + np.random.rand() / 100)
-
 
 def invoke_endpoint(payload):
     """

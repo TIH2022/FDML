@@ -7,7 +7,6 @@ from crhelper import CfnResource
 
 helper = CfnResource()
 
-
 @helper.create
 def on_create(_, __):
     pass
@@ -15,7 +14,6 @@ def on_create(_, __):
 @helper.update
 def on_update(_, __):
     pass
-
 
 def delete_sagemaker_endpoint(endpoint_name):
     sagemaker_client = boto3.client("sagemaker")

@@ -11,9 +11,7 @@ LOGBOOK_FILE = Path(CURRENT_FOLDER, 'env_setup_logbook.json')
 ROOT_PATHS = {'NotebookInstance': Path('/home/ec2-user'), 'Studio': Path('/root')}
 BIN_PATHS = {'NotebookInstance': Path('/usr/bin'), 'Studio': Path('/opt/conda/bin')}
 
-
 # Common setup
-
 def get_sagemaker_mode() -> str:
     stack_outputs_file = Path(CURRENT_FOLDER, 'stack_outputs.json')
     with open(stack_outputs_file) as f:
@@ -23,10 +21,8 @@ def get_sagemaker_mode() -> str:
         raise ValueError('SagemakerMode should be Studio or NotebookInstance. Check stack_outputs.json.')
     return sagemaker_mode
 
-
 def get_executable() -> str:
     return sys.executable
-
 
 def get_hostname() -> str:
     hostname_file = Path('/etc/hostname')
@@ -40,7 +36,6 @@ def get_hostname() -> str:
         hostname = None
     return hostname
 
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Setup environment for solution.')
     parser.add_argument('--force', action='store_true',)
@@ -48,11 +43,9 @@ def parse_args() -> argparse.Namespace:
     args = parser.parse_args()
     return args
 
-
 def read_file(file: str) -> str:
     with open(file, 'r') as f:
         return f.read()
-
 
 def bash(cmd: str) -> subprocess.CompletedProcess:
     try:
@@ -76,11 +69,9 @@ def bash(cmd: str) -> subprocess.CompletedProcess:
         raise e
     return process
 
-
 def logging_setup(level: str) -> None:
     level = logging.getLevelName(level)
     logging.basicConfig(stream=sys.stdout, level=level)
-
 
 def env_setup() -> None:
     args = parse_args()
@@ -104,7 +95,6 @@ def env_setup() -> None:
         else:
             logging.info('Skipping. Already setup environment.')
 
-
 def in_logbook(hostname: str, executable: str) -> bool:
     if LOGBOOK_FILE.is_file():
         with open(LOGBOOK_FILE, 'r') as f:
@@ -117,7 +107,6 @@ def in_logbook(hostname: str, executable: str) -> bool:
     else:
         logging.debug(f'Could not find logbook at {LOGBOOK_FILE}.')
         return False
-
 
 def add_to_logbook(hostname: str, executable: str) -> None:
     if (hostname is None) or (executable is None):
@@ -136,9 +125,7 @@ def add_to_logbook(hostname: str, executable: str) -> None:
         with open(LOGBOOK_FILE, 'w') as f:
             json.dump(logbook, f)
 
-
 # Solution specific setup
-
 def env_setup_notebook_instance() -> None:
     logging.info('Starting environment setup for Notebook Instance.')
     py_exec = get_executable()
@@ -177,7 +164,6 @@ def env_setup_notebook_instance() -> None:
     # nohup conda update -n python3 nb_conda_kernels -y &
     # """)
 
-
 def env_setup_studio() -> None:
     logging.info('Starting environment setup for Studio.')
     py_exec = get_executable()
@@ -189,7 +175,6 @@ def env_setup_studio() -> None:
     """)
 
     logging.info('Completed environment setup for Studio.')
-
 
 if __name__ == "__main__":
     env_setup()

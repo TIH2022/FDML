@@ -1,7 +1,6 @@
 import argparse
 import json
 
-
 def set_kernel_spec(notebook_filepath, display_name, kernel_name):
     with open(notebook_filepath, "r") as openfile:
         notebook = json.load(openfile)
@@ -11,7 +10,6 @@ def set_kernel_spec(notebook_filepath, display_name, kernel_name):
     notebook["metadata"]["kernelspec"] = kernel_spec
     with open(notebook_filepath, "w") as openfile:
         json.dump(notebook, openfile)
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

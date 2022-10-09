@@ -1,13 +1,11 @@
 import os
 import time
 import logging
-
 import boto3
 import papermill as pm
 import watchtower
 
 from package import config, utils
-
 
 if __name__ == "__main__":
 

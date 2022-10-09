@@ -1,21 +1,6 @@
-##############################################################################
-#  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.   #
-#                                                                            #
-#  Licensed under the Amazon Software License (the "License"). You may not   #
-#  use this file except in compliance with the License. A copy of the        #
-#  License is located at                                                     #
-#                                                                            #
-#      http://aws.amazon.com/asl/                                            #
-#                                                                            #
-#  or in the "license" file accompanying this file. This file is distributed #
-#  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,        #
-#  express or implied. See the License for the specific language governing   #
-#  permissions and limitations under the License.                            #
-##############################################################################
 import json
 import os
 import logging
-
 import boto3
 
 logger = logging.getLogger()
@@ -23,7 +8,6 @@ logger.setLevel(logging.INFO)
 
 STREAM_NAME = os.environ['StreamName']
 SOLUTION_PREFIX = os.environ['SolutionPrefix']
-
 
 def lambda_handler(event, context):
     logger.info(event)
@@ -47,7 +31,6 @@ def lambda_handler(event, context):
     store_data_prediction(output, metadata)
     return output
 
-
 def get_anomaly_prediction(data):
     sagemaker_endpoint_name = "{}-rcf".format(SOLUTION_PREFIX)
     sagemaker_runtime = boto3.client('sagemaker-runtime')
@@ -58,7 +41,6 @@ def get_anomaly_prediction(data):
     logger.info("anomaly score: {}".format(anomaly_score))
 
     return {"score": anomaly_score}
-
 
 def get_fraud_prediction(data, threshold=0.5):
     sagemaker_endpoint_name = "{}-xgb".format(SOLUTION_PREFIX)
@@ -71,7 +53,6 @@ def get_fraud_prediction(data, threshold=0.5):
     logger.info("classification pred_proba: {}, prediction: {}".format(pred_proba, prediction))
 
     return {"pred_proba": pred_proba, "prediction": prediction}
-
 
 def store_data_prediction(output_dict, metadata):
     firehose_delivery_stream = STREAM_NAME
